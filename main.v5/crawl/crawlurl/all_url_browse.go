@@ -2,8 +2,10 @@ package crawlurl
 
 import (
 	"fmt"
-	"golang.org/x/net/html"
+
+	"../../savedata"
 	"github.com/PuerkitoBio/goquery"
+	"golang.org/x/net/html"
 )
 
 // find rel in token
@@ -28,17 +30,20 @@ func GetHref(t *html.Node) (href string) {
 
 // find next page
 func NextPage(href string) (url string) {
+	var value string
 	doc, err := goquery.NewDocument(href)
 	if err != nil {
-		fmt.Println("Error: ", err)
+		fmt.Println("Error next page: ", err)
+		savedata.SaveUrlError(href)
 		return url
 	}
 	doc.Find("link").Each(func(i int, s *goquery.Selection) {
 		for _, k := range s.Nodes {
 			if GetRel(k) == "next" {
-				url = GetHref(k)
+				value = GetHref(k)
 			}
 		}
 	})
+	url = OptimizeUrl(value)
 	return url
 }

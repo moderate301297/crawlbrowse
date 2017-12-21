@@ -1,10 +1,10 @@
 package dbconnection
 
 import (
-	"fmt"
 	"database/sql"
+	"fmt"
+
 	_ "github.com/go-sql-driver/mysql"
-	"gopkg.in/mgo.v2"
 )
 
 var (
@@ -17,7 +17,6 @@ func init() {
 	if err != nil {
 		fmt.Println("Error: ", err)
 	}
-
 }
 
 func Close() {
